@@ -296,11 +296,23 @@ function refreshAll() {
   const expenses = getAllExpenses();
   const settings = getSettings();
 
+  renderHeroMeta(expenses, settings);
   renderStats(expenses, settings);
   renderBudget(expenses, settings);
   renderTransactions(expenses);
   renderCharts(expenses, settings.currency);
   renderInsights(expenses, settings);
+}
+
+function renderHeroMeta(expenses, settings) {
+  const stats = getQuickStats(expenses);
+  const budgetMeta = document.getElementById('hero-budget-meta');
+  const currencyMeta = document.getElementById('hero-currency-meta');
+  const activityMeta = document.getElementById('hero-activity-meta');
+
+  if (budgetMeta) budgetMeta.textContent = formatCurrency(settings.monthlyBudget || 2000, settings.currency);
+  if (currencyMeta) currencyMeta.textContent = settings.currency || 'USD';
+  if (activityMeta) activityMeta.textContent = `${stats.transactionCount} entries`;
 }
 
 // ── Stats Cards ───────────────────────────────────────────────────
