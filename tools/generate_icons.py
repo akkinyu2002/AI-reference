@@ -70,6 +70,16 @@ def draw_close(img, color=DARK):
     d.line((23, 9, 9, 23), fill=color, width=3)
 
 
+def draw_logo(img):
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((2, 2, SIZE - 3, SIZE - 3), radius=10, fill=ACCENT)
+    d.rounded_rectangle((4, 4, SIZE - 5, SIZE - 5), radius=8, outline=(255, 255, 255, 90), width=1)
+    d.line((11, 10, 11, 22), fill=(255, 255, 255, 255), width=3)
+    d.line((11, 10, 21, 10), fill=(255, 255, 255, 255), width=3)
+    d.line((11, 16, 19, 16), fill=(255, 255, 255, 255), width=3)
+    d.line((11, 22, 21, 22), fill=(255, 255, 255, 255), width=3)
+
+
 icons = {
     'add.png': draw_plus,
     'export.png': draw_export,
@@ -78,6 +88,7 @@ icons = {
     'activity.png': draw_clock,
     'bell.png': draw_bell,
     'close.png': draw_close,
+    'logo.png': draw_logo,
 }
 
 for filename, drawer in icons.items():

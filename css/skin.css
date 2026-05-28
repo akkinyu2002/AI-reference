@@ -14,6 +14,8 @@
 /* Base resets and typography overrides */
 body { background: var(--bg-secondary) !important; color:var(--text-primary) !important; font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial !important; line-height:1.5; }
 .logo-icon { background: transparent !important; box-shadow: none !important; }
+.logo-icon { width: 48px; height: 48px; padding: 0; overflow: hidden; }
+.logo-icon img.logo-img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .logo-initial { font-family: 'Merriweather', serif !important; color:var(--text-primary) !important; }
 .app-header { padding: 18px 0 16px; border-bottom:1px solid var(--border); align-items:flex-end; }
 .app-logo { gap: 12px; }
