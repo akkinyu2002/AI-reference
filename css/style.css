@@ -712,6 +712,14 @@ body::before {
   color: var(--danger);
 }
 
+/* Focus styles for accessibility */
+:focus {
+  outline: 3px solid rgba(124,58,237,0.25);
+  outline-offset: 2px;
+}
+
+.modal, .modal.small { outline: none; }
+
 /* Empty State */
 .empty-state {
   text-align: center;

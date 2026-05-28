@@ -502,6 +502,8 @@ function openModal(expense = null) {
   });
 
   overlay.classList.add('active');
+  // Accessibility: enable focus trap for modal
+  trapFocus(overlay);
   document.getElementById('form-amount').focus();
 
   // Sync large mobile amount display
@@ -512,7 +514,9 @@ function openModal(expense = null) {
 }
 
 function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
+  const overlay = document.getElementById('modal-overlay');
+  releaseFocus(overlay);
+  overlay.classList.remove('active');
   editingId = null;
   document.getElementById('expense-form').reset();
 }
@@ -599,11 +603,15 @@ function openSettings() {
   const settings = getSettings();
   document.getElementById('settings-budget').value = settings.monthlyBudget || 2000;
   document.getElementById('settings-currency').value = settings.currency || 'USD';
-  document.getElementById('settings-overlay').classList.add('active');
+  const overlay = document.getElementById('settings-overlay');
+  overlay.classList.add('active');
+  trapFocus(overlay);
 }
 
 function closeSettings() {
-  document.getElementById('settings-overlay').classList.remove('active');
+  const overlay = document.getElementById('settings-overlay');
+  releaseFocus(overlay);
+  overlay.classList.remove('active');
 }
 
 function saveSettings() {
@@ -647,6 +655,7 @@ function openConfirm(message, onConfirm) {
 
   msg.textContent = message;
   overlay.classList.add('active');
+  trapFocus(overlay);
   __confirmCallback = onConfirm;
 
   function cleanup() {
@@ -663,6 +672,41 @@ function openConfirm(message, onConfirm) {
   yes.addEventListener('click', onYes);
   no.addEventListener('click', onNo);
   closeBtn.addEventListener('click', onNo);
+}
+
+// Focus trap utilities for modals
+function trapFocus(overlay) {
+  if (!overlay) return;
+  const focusable = 'a[href], area[href], input:not([disabled]):not([type=hidden]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])';
+  const nodes = Array.from(overlay.querySelectorAll(focusable)).filter(el => el.offsetParent !== null);
+  const first = nodes[0];
+  const last = nodes[nodes.length - 1];
+  overlay.__previousActive = document.activeElement;
+
+  function keyHandler(e) {
+    if (e.key === 'Escape') { e.preventDefault(); overlay.classList.remove('active'); releaseFocus(overlay); return; }
+    if (e.key === 'Tab') {
+      if (nodes.length === 0) { e.preventDefault(); return; }
+      if (e.shiftKey) {
+        if (document.activeElement === first || document.activeElement === overlay) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+  }
+
+  overlay.__ftHandler = keyHandler;
+  overlay.addEventListener('keydown', keyHandler);
+  // focus first element or overlay
+  (first || overlay).focus();
+}
+
+function releaseFocus(overlay) {
+  if (!overlay) return;
+  if (overlay.__ftHandler) overlay.removeEventListener('keydown', overlay.__ftHandler);
+  if (overlay.__previousActive && typeof overlay.__previousActive.focus === 'function') overlay.__previousActive.focus();
+  overlay.__ftHandler = null;
+  overlay.__previousActive = null;
 }
 
 
