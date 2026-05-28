@@ -53,6 +53,7 @@ body { background: var(--bg-secondary) !important; color:var(--text-primary) !im
 .bottom-nav .nav-btn.active .nav-icon { color: var(--accent); }
 .bottom-nav .nav-btn img.nav-icon-img { opacity: 0.78; }
 .bottom-nav .nav-btn.add-cta { background:var(--accent); color:#fff; box-shadow: 0 10px 20px rgba(179,107,43,0.12); transform:none }
+.bottom-nav .nav-btn.add-cta .nav-icon-img { opacity: 1; filter: brightness(0) invert(1); }
 .bottom-nav .nav-btn.add-cta.active { background: var(--accent); color:#fff; box-shadow: 0 10px 20px rgba(179,107,43,0.18), inset 0 0 0 1px rgba(255,255,255,0.18); }
 /* Focus */
 :focus { outline: 3px solid rgba(179,107,43,0.12); outline-offset:3px }
