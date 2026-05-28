@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI-powered expense tracker with smart categorization, natural language input, and intelligent spending insights.">
+  <title>ExpenseAI — Smart Expense Tracker</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+
+  <div class="app-container" id="app">
+
+    <!-- ── Header ──────────────────────────────────────────────── -->
+    <header class="app-header">
+      <div class="app-logo">
+        <div class="logo-icon"><span class="logo-initial">E</span></div>
+        <div class="logo-text">
+          <h1>ExpenseAI</h1>
+          <p>Track spending effortlessly — tell me what you bought.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="btn-add-manual" title="Add expense manually">＋</button>
+        <button class="btn-icon" id="btn-export" title="Export data">↓</button>
+        <button class="btn-icon" id="btn-settings" title="Settings">S</button>
+      </div>
+    </header>
+
+    <!-- ── AI Input Bar ────────────────────────────────────────── -->
+    <section class="ai-input-section" id="ai-input-section">
+      <div class="ai-input-wrapper">
+        <div class="ai-badge">
+          <span class="ai-badge-dot"></span>
+          AI
+        </div>
+        <input
+          type="text"
+          id="ai-input"
+          placeholder='Try: "Spent $45 on dinner yesterday" or "$120 groceries at Costco"'
+          autocomplete="off"
+          aria-label="AI expense input"
+        >
+        <button class="ai-submit-btn" id="ai-submit" title="Add expense" aria-label="Submit expense">
+          →
+        </button>
+      </div>
+      <div class="ai-helper" style="margin-top:8px;color:var(--text-muted);font-size:0.9rem">
+        Tip: Use natural language like "Spent $12.50 on lunch yesterday" — I'll take care of the rest.
+      </div>
+      <div class="ai-preview" id="ai-preview">
+        <div class="ai-preview-tag" id="preview-amount">
+          <span class="label">Amount</span>
+          <span class="value" id="preview-amount-val">—</span>
+        </div>
+        <div class="ai-preview-tag" id="preview-category">
+          <span class="label">Category</span>
+          <span class="value" id="preview-category-val">—</span>
+        </div>
+        <div class="ai-preview-tag" id="preview-date">
+          <span class="label">Date</span>
+          <span class="value" id="preview-date-val">—</span>
+        </div>
+        <div class="ai-preview-tag" id="preview-desc">
+          <span class="label">Description</span>
+          <span class="value" id="preview-desc-val">—</span>
+        </div>
+        <div class="ai-preview-confidence" id="preview-confidence">
+          <span class="confidence-label" style="color:var(--text-muted);font-size:0.75rem;margin-right:6px">Confidence</span>
+          <span id="confidence-text">85%</span>
+          <div class="confidence-bar">
+            <div class="confidence-fill" id="confidence-fill" style="width: 85%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Stats Cards ─────────────────────────────────────────── -->
+    <section class="stats-grid" id="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon purple"><span class="stat-dot"></span></div>
+          <span class="stat-label">This Month</span>
+        </div>
+        <div class="stat-value" id="stat-monthly-total">$0.00</div>
+        <div class="stat-change" id="stat-monthly-change"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon cyan"><span class="stat-dot"></span></div>
+          <span class="stat-label">Today</span>
+        </div>
+        <div class="stat-value" id="stat-today-total">$0.00</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon green"><span class="stat-dot"></span></div>
+          <span class="stat-label">Transactions</span>
+        </div>
+        <div class="stat-value" id="stat-tx-count">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon orange"><span class="stat-dot"></span></div>
+          <span class="stat-label">Top Category</span>
+        </div>
+        <div class="stat-value" id="stat-top-category" style="font-size:1.1rem">—</div>
+      </div>
+    </section>
+
+    <!-- ── Budget Bar ──────────────────────────────────────────── -->
+    <section class="glass-card" id="budget-section" style="margin-bottom:32px">
+      <div class="card-title"><span class="icon-dot" aria-hidden="true"></span> Monthly Budget</div>
+      <div class="budget-bar-wrapper">
+        <div class="budget-info">
+          <span class="budget-label" id="budget-label">$0 of $2,000 spent</span>
+          <span class="budget-value" id="budget-pct">0%</span>
+        </div>
+        <div class="budget-bar">
+          <div class="budget-fill" id="budget-fill" style="width: 0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Charts Dashboard ────────────────────────────────────── -->
+    <section class="dashboard-grid" id="dashboard-grid">
+      <div class="glass-card">
+        <div class="card-title"><span class="icon-dot" aria-hidden="true"></span> Spending by Category</div>
+        <div class="chart-container">
+          <canvas id="chart-category"></canvas>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-title"><span class="icon-dot" aria-hidden="true"></span> Monthly Trend</div>
+        <div class="chart-container">
+          <canvas id="chart-trend"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AI Insights ─────────────────────────────────────────── -->
+    <section class="insights-section" id="insights-section">
+      <div class="section-header">
+        <h2 class="section-title">AI Insights</h2>
+      </div>
+      <div class="insights-grid" id="insights-grid">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+    <!-- ── Transactions ────────────────────────────────────────── -->
+    <section class="transactions-section" id="transactions-section">
+      <div class="section-header">
+        <h2 class="section-title">Transactions <span class="count" id="tx-count-badge">0</span></h2>
+        <div class="filter-bar">
+          <input
+            type="text"
+            class="search-input"
+            id="search-input"
+            placeholder="Search expenses..."
+            aria-label="Search expenses"
+          >
+          <select class="filter-select" id="filter-category" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+          </select>
+          <select class="filter-select" id="filter-sort" aria-label="Sort by">
+            <option value="date-desc">Newest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="amount-desc">Highest Amount</option>
+            <option value="amount-asc">Lowest Amount</option>
+          </select>
+        </div>
+      </div>
+      <div class="transactions-list" id="transactions-list">
+        <!-- Dynamically populated -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ── Add/Edit Expense Modal ──────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-labelledby="modal-title">
+      <div class="modal-header">
+        <div class="modal-left">
+          <div class="avatar"><img src="https://i.pravatar.cc/100" alt="User avatar"></div>
+          <h3 class="modal-title" id="modal-title">New Entry</h3>
+        </div>
+        <button class="modal-bell" id="modal-bell" aria-label="Notifications">🔔</button>
+        <button class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+      </div>
+      <form id="expense-form" autocomplete="off">
+        <div class="modal-amount" aria-hidden="true">
+          <div class="value" id="modal-amount-display">0.00</div>
+          <div class="label" style="width:100%;text-align:center;color:var(--text-muted);letter-spacing:2px;margin-top:6px">ENTER AMOUNT</div>
+        </div>
+        <input type="hidden" id="form-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="form-amount">Amount ($)</label>
+            <input type="number" step="0.01" min="0" class="form-input" id="form-amount" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-date">Date</label>
+            <input type="date" class="form-input" id="form-date" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="form-description">Description</label>
+          <input type="text" class="form-input" id="form-description" placeholder="What did you spend on?" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <div class="category-picker" id="category-picker">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="form-notes">Notes (optional)</label>
+          <input type="text" class="form-input" id="form-notes" placeholder="Any extra details...">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="modal-cancel">Cancel</button>
+           <button type="submit" class="btn btn-primary btn-full add-transaction" id="modal-submit">+ Add Transaction</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Settings Modal ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="settings-overlay">
+    <div class="modal" role="dialog" aria-labelledby="settings-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="settings-title">⚙️ Settings</h3>
+        <button class="modal-close" id="settings-close" aria-label="Close settings">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="settings-budget">Monthly Budget ($)</label>
+        <input type="number" step="50" min="0" class="form-input" id="settings-budget" placeholder="2000">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="settings-currency">Currency</label>
+        <select class="form-input" id="settings-currency">
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="JPY">JPY (¥)</option>
+          <option value="CAD">CAD (C$)</option>
+          <option value="AUD">AUD (A$)</option>
+          <option value="INR">INR (₹)</option>
+          <option value="NPR">NPR (₨)</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-clear-data" style="color:var(--danger)">Clear All Data</button>
+        <button class="btn btn-primary" id="settings-save">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast Container ─────────────────────────────────────── -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ── Confirmation Modal (in-app) ─────────────────────────── -->
+  <div class="modal-overlay" id="confirm-overlay" aria-hidden="true">
+    <div class="modal small" role="dialog" aria-labelledby="confirm-title">
+      <div class="modal-header">
+        <h3 class="modal-title" id="confirm-title">Confirm</h3>
+        <button class="modal-close" id="confirm-close" aria-label="Close">✕</button>
+      </div>
+      <div class="form-group" style="padding:12px 18px;">
+        <p id="confirm-message" style="margin:0;color:var(--text);">Are you sure?</p>
+      </div>
+      <div class="modal-actions" style="padding:12px 18px;">
+        <button class="btn btn-secondary" id="confirm-no">Cancel</button>
+        <button class="btn btn-danger" id="confirm-yes">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Bottom Nav (visual only, mobile) ───────────────────────── -->
+  <nav class="bottom-nav" aria-hidden="true">
+    <button class="nav-btn" id="btn-nav-dashboard"><span class="nav-icon">▦</span><span>Dashboard</span></button>
+    <button class="nav-btn" id="btn-nav-activity"><span class="nav-icon">🕘</span><span>Activity</span></button>
+    <button class="nav-btn add-cta" id="bottom-add"><span class="nav-icon">＋</span><span>Add</span></button>
+    <button class="nav-btn" id="btn-nav-settings"><span class="nav-icon">⚙️</span><span>Settings</span></button>
+  </nav>
+
+  <!-- ── App Script ──────────────────────────────────────────── -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>
