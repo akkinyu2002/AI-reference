@@ -30,9 +30,9 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="btn-icon" id="btn-add-manual" title="Add expense manually">＋</button>
-        <button class="btn-icon" id="btn-export" title="Export data">↓</button>
-        <button class="btn-icon" id="btn-settings" title="Settings">S</button>
+        <button class="btn-icon" id="btn-add-manual" title="Add expense manually" aria-label="Add expense manually"><img class="icon-png" src="assets/icons/add.png" alt=""></button>
+        <button class="btn-icon" id="btn-export" title="Export data" aria-label="Export data"><img class="icon-png" src="assets/icons/export.png" alt=""></button>
+        <button class="btn-icon" id="btn-settings" title="Settings" aria-label="Settings"><img class="icon-png" src="assets/icons/settings.png" alt=""></button>
       </div>
     </header>
 
@@ -218,8 +218,8 @@
           <div class="avatar"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO7+6eQAAAAASUVORK5CYII=" alt="User avatar"></div>
           <h3 class="modal-title" id="modal-title">New Entry</h3>
         </div>
-        <button class="modal-bell" id="modal-bell" aria-label="Notifications">🔔</button>
-        <button class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+        <button class="modal-bell" id="modal-bell" aria-label="Notifications"><img class="icon-png" src="assets/icons/bell.png" alt=""></button>
+        <button class="modal-close" id="modal-close" aria-label="Close modal"><img class="icon-png" src="assets/icons/close.png" alt=""></button>
       </div>
       <form id="expense-form" autocomplete="off">
         <div class="modal-amount" aria-hidden="true">
@@ -264,7 +264,7 @@
     <div class="modal" role="dialog" aria-labelledby="settings-title">
       <div class="modal-header">
         <h3 class="modal-title" id="settings-title">⚙️ Settings</h3>
-        <button class="modal-close" id="settings-close" aria-label="Close settings">✕</button>
+        <button class="modal-close" id="settings-close" aria-label="Close settings"><img class="icon-png" src="assets/icons/close.png" alt=""></button>
       </div>
       <div class="form-group">
         <label class="form-label" for="settings-budget">Monthly Budget ($)</label>
@@ -298,7 +298,7 @@
     <div class="modal small" role="dialog" aria-labelledby="confirm-title">
       <div class="modal-header">
         <h3 class="modal-title" id="confirm-title">Confirm</h3>
-        <button class="modal-close" id="confirm-close" aria-label="Close">✕</button>
+        <button class="modal-close" id="confirm-close" aria-label="Close"><img class="icon-png" src="assets/icons/close.png" alt=""></button>
       </div>
       <div class="form-group" style="padding:12px 18px;">
         <p id="confirm-message" style="margin:0;color:var(--text);">Are you sure?</p>
@@ -312,10 +312,10 @@
 
   <!-- ── Bottom Nav (visual only, mobile) ───────────────────────── -->
   <nav class="bottom-nav" role="navigation" aria-label="Bottom navigation">
-    <button class="nav-btn" id="btn-nav-dashboard"><span class="nav-icon">▦</span><span>Dashboard</span></button>
-    <button class="nav-btn" id="btn-nav-activity"><span class="nav-icon">🕘</span><span>Activity</span></button>
-    <button class="nav-btn add-cta" id="bottom-add"><span class="nav-icon">＋</span><span>Add</span></button>
-    <button class="nav-btn" id="btn-nav-settings"><span class="nav-icon">⚙️</span><span>Settings</span></button>
+    <button class="nav-btn" id="btn-nav-dashboard"><img class="icon-png nav-icon-img" src="assets/icons/dashboard.png" alt=""><span>Dashboard</span></button>
+    <button class="nav-btn" id="btn-nav-activity"><img class="icon-png nav-icon-img" src="assets/icons/activity.png" alt=""><span>Activity</span></button>
+    <button class="nav-btn add-cta" id="bottom-add"><img class="icon-png nav-icon-img" src="assets/icons/add.png" alt=""><span>Add</span></button>
+    <button class="nav-btn" id="btn-nav-settings"><img class="icon-png nav-icon-img" src="assets/icons/settings.png" alt=""><span>Settings</span></button>
   </nav>
 
   <!-- ── App Script ──────────────────────────────────────────── -->

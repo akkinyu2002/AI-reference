@@ -20,6 +20,8 @@ body { background: var(--bg-secondary) !important; color:var(--text-primary) !im
 .app-logo h1 { font-family: 'Merriweather', serif; font-weight:700; font-size:1.35rem; color:var(--text-primary); letter-spacing:-0.02em; }
 .logo-text p { color:var(--text-muted); font-size:0.86rem; max-width: 34ch; }
 .header-actions .btn-icon { background: transparent; border:1px solid var(--border); color:var(--text-secondary); width:38px; height:38px; }
+.icon-png { width: 18px; height: 18px; display:block; }
+.nav-icon-img { width: 20px; height: 20px; }
 /* Inputs and AI bar */
 .ai-input-wrapper { border-radius: var(--radius-md) !important; background: transparent !important; border:1px solid var(--border) !important; box-shadow:none !important; }
 #ai-input { padding: 12px 8px; font-size:0.98rem; color:var(--text-primary); }
@@ -47,6 +49,7 @@ body { background: var(--bg-secondary) !important; color:var(--text-primary) !im
 .bottom-nav .nav-btn { color:var(--text-secondary); border-radius:8px; padding:8px 10px; position: relative; }
 .bottom-nav .nav-btn.active { color: var(--text-primary); background: rgba(179,107,43,0.10); box-shadow: inset 0 0 0 1px rgba(179,107,43,0.24); }
 .bottom-nav .nav-btn.active .nav-icon { color: var(--accent); }
+.bottom-nav .nav-btn img.nav-icon-img { opacity: 0.78; }
 .bottom-nav .nav-btn.add-cta { background:var(--accent); color:#fff; box-shadow: 0 10px 20px rgba(179,107,43,0.12); transform:none }
 .bottom-nav .nav-btn.add-cta.active { background: var(--accent); color:#fff; box-shadow: 0 10px 20px rgba(179,107,43,0.18), inset 0 0 0 1px rgba(255,255,255,0.18); }
 /* Focus */
