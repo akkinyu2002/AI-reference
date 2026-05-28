@@ -569,7 +569,10 @@ function initCategoryPicker() {
   const picker = document.getElementById('category-picker');
   picker.innerHTML = '';
 
-  CATEGORIES.forEach(cat => {
+  // Present categories in a stable alphabetical order to improve scanability
+  const cats = [...CATEGORIES].sort((a, b) => a.name.localeCompare(b.name));
+
+  cats.forEach(cat => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'category-option';
@@ -589,7 +592,9 @@ function initCategoryPicker() {
 
 function initCategoryFilter() {
   const select = document.getElementById('filter-category');
-  CATEGORIES.forEach(cat => {
+  // Keep filter options alphabetical for predictable navigation
+  const cats = [...CATEGORIES].sort((a, b) => a.name.localeCompare(b.name));
+  cats.forEach(cat => {
     const option = document.createElement('option');
     option.value = cat.id;
     option.textContent = cat.name;
