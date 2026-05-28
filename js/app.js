@@ -169,6 +169,16 @@ function bindEvents() {
   if (navSettings) navSettings.addEventListener('click', () => openSettings());
   if (navSettings) navSettings.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSettings(); } });
 
+  // Touch fallback: ensure taps on bottom nav trigger same handlers on mobile devices
+  document.addEventListener('touchend', (e) => {
+    const btn = e.target.closest && e.target.closest('button');
+    if (!btn) return;
+    if (btn.id === 'btn-nav-dashboard') { closeModal(); closeSettings(); const el = document.getElementById('dashboard-grid'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (btn.id === 'btn-nav-activity') { closeModal(); closeSettings(); const el = document.getElementById('transactions-section'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (btn.id === 'bottom-add') { openModal(); }
+    if (btn.id === 'btn-nav-settings') { openSettings(); }
+  }, { passive: true });
+
   // Settings
   document.getElementById('btn-settings').addEventListener('click', openSettings);
   document.getElementById('settings-close').addEventListener('click', closeSettings);

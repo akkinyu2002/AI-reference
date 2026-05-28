@@ -1297,6 +1297,7 @@ body::before {
   gap: 12px;
   justify-content: space-around;
   z-index: 900; /* keep below modal */
+  pointer-events: auto; /* ensure clicks/taps reach the nav */
 }
 .bottom-nav .nav-btn { background: transparent; border: none; color: var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:6px; padding:8px 12px; border-radius:12px }
 .bottom-nav .nav-btn .nav-icon { font-size:18px }
