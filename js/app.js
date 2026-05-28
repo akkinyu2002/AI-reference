@@ -152,18 +152,22 @@ function bindEvents() {
   // Bottom nav buttons (mobile): dashboard, activity, settings
   const navDashboard = document.getElementById('btn-nav-dashboard');
   if (navDashboard) navDashboard.addEventListener('click', () => {
+    // close modals if open then scroll
+    closeModal(); closeSettings();
     const el = document.getElementById('dashboard-grid');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   const navActivity = document.getElementById('btn-nav-activity');
   if (navActivity) navActivity.addEventListener('click', () => {
+    closeModal(); closeSettings();
     const el = document.getElementById('transactions-section');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   const navSettings = document.getElementById('btn-nav-settings');
   if (navSettings) navSettings.addEventListener('click', () => openSettings());
+  if (navSettings) navSettings.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSettings(); } });
 
   // Settings
   document.getElementById('btn-settings').addEventListener('click', openSettings);
