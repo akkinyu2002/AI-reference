@@ -39,6 +39,7 @@ body { background: var(--bg-secondary) !important; color:var(--text-primary) !im
 .modal-overlay { background: rgba(33,31,28,0.35) !important; backdrop-filter: none !important }
 .modal-header .modal-title { font-family:'Merriweather', serif; color:var(--text-primary); }
 .modal-amount .value { font-family:'Merriweather', serif; color:var(--text-primary); }
+.modal-left .avatar { background: rgba(179,107,43,0.18); }
 .form-label { color: var(--text-secondary); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .form-input { background: #fff !important; border:1px solid var(--border) !important; border-radius:8px !important; color:var(--text-primary) !important; }
 /* Bottom nav refined */
