@@ -112,6 +112,8 @@ function seedDemoDataIfEmpty() {
 // ── Bind All Events ───────────────────────────────────────────────
 
 function bindEvents() {
+  setActiveBottomNav('btn-nav-dashboard');
+
   // AI input
   const aiInput = document.getElementById('ai-input');
   const aiSubmit = document.getElementById('ai-submit');
@@ -152,6 +154,7 @@ function bindEvents() {
   // Bottom nav buttons (mobile): dashboard, activity, settings
   const navDashboard = document.getElementById('btn-nav-dashboard');
   if (navDashboard) navDashboard.addEventListener('click', () => {
+    setActiveBottomNav('btn-nav-dashboard');
     // close modals if open then scroll
     closeModal(); closeSettings();
     const el = document.getElementById('dashboard-grid');
@@ -160,23 +163,24 @@ function bindEvents() {
 
   const navActivity = document.getElementById('btn-nav-activity');
   if (navActivity) navActivity.addEventListener('click', () => {
+    setActiveBottomNav('btn-nav-activity');
     closeModal(); closeSettings();
     const el = document.getElementById('transactions-section');
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   const navSettings = document.getElementById('btn-nav-settings');
-  if (navSettings) navSettings.addEventListener('click', () => openSettings());
-  if (navSettings) navSettings.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSettings(); } });
+  if (navSettings) navSettings.addEventListener('click', () => { setActiveBottomNav('btn-nav-settings'); openSettings(); });
+  if (navSettings) navSettings.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveBottomNav('btn-nav-settings'); openSettings(); } });
 
   // Touch fallback: ensure taps on bottom nav trigger same handlers on mobile devices
   document.addEventListener('touchend', (e) => {
     const btn = e.target.closest && e.target.closest('button');
     if (!btn) return;
-    if (btn.id === 'btn-nav-dashboard') { closeModal(); closeSettings(); const el = document.getElementById('dashboard-grid'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    if (btn.id === 'btn-nav-activity') { closeModal(); closeSettings(); const el = document.getElementById('transactions-section'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    if (btn.id === 'bottom-add') { openModal(); }
-    if (btn.id === 'btn-nav-settings') { openSettings(); }
+    if (btn.id === 'btn-nav-dashboard') { setActiveBottomNav('btn-nav-dashboard'); closeModal(); closeSettings(); const el = document.getElementById('dashboard-grid'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (btn.id === 'btn-nav-activity') { setActiveBottomNav('btn-nav-activity'); closeModal(); closeSettings(); const el = document.getElementById('transactions-section'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (btn.id === 'bottom-add') { setActiveBottomNav('bottom-add'); openModal(); }
+    if (btn.id === 'btn-nav-settings') { setActiveBottomNav('btn-nav-settings'); openSettings(); }
   }, { passive: true });
 
   // Settings
@@ -229,7 +233,16 @@ function bindEvents() {
     // Header / nav buttons fallback
     if (btn.id === 'btn-export') { handleExport(); return; }
     if (btn.id === 'btn-settings') { openSettings(); return; }
-    if (btn.id === 'btn-add-manual' || btn.id === 'bottom-add') { openModal(); return; }
+    if (btn.id === 'btn-add-manual' || btn.id === 'bottom-add') { setActiveBottomNav('bottom-add'); openModal(); return; }
+  });
+}
+
+function setActiveBottomNav(activeId) {
+  const navButtons = ['btn-nav-dashboard', 'btn-nav-activity', 'bottom-add', 'btn-nav-settings'];
+  navButtons.forEach(id => {
+    const button = document.getElementById(id);
+    if (!button) return;
+    button.classList.toggle('active', id === activeId);
   });
 }
 
