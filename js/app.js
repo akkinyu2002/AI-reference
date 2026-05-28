@@ -731,8 +731,8 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
 
-  const icons = { success: '✅', warning: '⚠️', error: '❌', info: '💬' };
-  toast.innerHTML = `<span>${icons[type] || ''}</span><span>${message}</span>`;
+  const icons = { success: '✓', warning: '⚠', error: '✖', info: 'i' };
+  toast.innerHTML = `<span style="margin-right:8px;font-weight:700">${icons[type] || ''}</span><span>${message}</span>`;
 
   container.appendChild(toast);
 
