@@ -508,7 +508,7 @@ function openModal(expense = null) {
   document.getElementById('form-notes').value = expense ? expense.notes || '' : '';
 
   // Set category
-  const selectedCat = expense ? expense.category : 'food';
+  const selectedCat = expense ? expense.category : 'other';
   document.querySelectorAll('.category-option').forEach(opt => {
     opt.classList.toggle('selected', opt.dataset.category === selectedCat);
   });

@@ -972,10 +972,10 @@ body::before {
 }
 
 .category-option.selected {
-  background: #34d399; /* friendly green */
-  border-color: rgba(16,185,129,0.2);
-  color: #052e19;
-  box-shadow: 0 8px 24px rgba(16,185,129,0.12);
+  background: rgba(179, 107, 43, 0.12);
+  border-color: rgba(179, 107, 43, 0.35);
+  color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px rgba(179, 107, 43, 0.18);
 }
 
 .category-option .cat-icon { font-size: 1.25rem; }
