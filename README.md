@@ -25,4 +25,4 @@ Contributing
 
 License
 
-Add a license of your choice.
+Specify a license (e.g., MIT) or add a `LICENSE` file at the project root.
